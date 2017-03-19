@@ -1,22 +1,27 @@
-import threading
-import camera_controller as camCont
-import disp_map
-from time import time, sleep
+#import cv2
+import picamera
+import time
+#from time import time, sleep
 
-def main():
+camera = picamera.PiCamera()
 
-    lock = threading.Lock()
-    stop = False
-    camCont.start_capture(lock, stop)
-    disp_map.calc_disp_map(lock, stop)
-
+def start_capture(lock, stop):
+    "captures images from cameras"
+    count=0
     while(not stop):
-        ip = input('Type s to stop')
-        if(ip == 's'):
-            stop = True        
+        lock.acquire()
+        if(count==10):
+            stop = True
+        else:
+            count += 1
+        print(('%s %d'), ('lock acquired by camera : ', count))
+        try:
+            camera.capture('imgL.jpg')
+            camera.capture('imgR.jpg')
+        finally:
+            print('lock released by camera')    
+            lock.release();
+            time.sleep(1)
 
-    print('exiting main thread')
-
-
-if(__name__ == '__main__'):
-    main()
+    print('stopping image capture')
+    
