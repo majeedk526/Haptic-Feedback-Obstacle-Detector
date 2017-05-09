@@ -3,3 +3,7 @@ This project aims at providing support for a visually impaired by notifying them
 
 ## Technologies used
 Raspberry pi, Linux, OpenCV, Python
+
+## Screens
+![Image1](./screens/disp2.png)
+![Image2](./screens/disp.png)
